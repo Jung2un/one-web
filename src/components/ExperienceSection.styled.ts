@@ -10,7 +10,7 @@ export const SectionWrapper = styled.section`
     justify-content: center;
 
     @media (max-width: 767px) {
-        padding: 2rem 1rem;
+        //padding: 2rem 1rem;
     }
 `;
 
@@ -31,7 +31,7 @@ export const SectionTitle = styled.h2`
 
 export const CardContainer = styled.div`
     width: 100%;
-    padding: 3rem;
+    padding: 1.5rem;
     overflow: hidden;
     max-width: 1100px;
     position: relative;
@@ -76,13 +76,13 @@ export const FeatureCard = styled.div`
     z-index: 1;
     padding: 2rem;
     height: 450px;
-    background: #fff;
+    cursor: pointer;
     text-align: left;
     position: relative;
     border-radius: 1rem;
+    background-color: #fff;
     transition: all 0.3s ease;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-    cursor: pointer;
 
     &::before {
         content: '';
