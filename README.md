@@ -19,4 +19,5 @@
 - React
 - Next.js (App Router)
 - TypeScript
+- Zustand
 - Styled Components
