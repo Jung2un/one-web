@@ -1,8 +1,17 @@
-import styles from "./page.module.css";
+import Footer from "@/components/Footer";
+import MainSection from "@/components/MainSection";
+import DailyPickSection from "@/components/DailyPickSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import FutureCardSection from "@/components/FutureCardSection";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-    </div>
+    <>
+      <MainSection />
+      <ExperienceSection />
+      <FutureCardSection />
+      <DailyPickSection />
+      <Footer />
+    </>
   );
 }
