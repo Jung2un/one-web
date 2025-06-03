@@ -14,6 +14,9 @@ export default function StyledComponentsRegistry({ children }: { children: React
     return <>{styles}</>;
   });
 
+  // 조건부 UI 렌더링 오류 시 필요
+  if (typeof window !== 'undefined') return <>{children}</>
+
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
       <GlobalStyle />

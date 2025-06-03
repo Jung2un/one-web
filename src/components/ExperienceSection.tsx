@@ -62,6 +62,7 @@ export default function ExperienceSection() {
                   alt={feature.title}
                   fill
                   style={{ objectFit: "cover" }}
+                  sizes="(max-width: 768px) 100vw, 600px"
                 />
               </FeatureImage>
               <FeatureContent>
