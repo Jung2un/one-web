@@ -1,10 +1,5 @@
 import { create } from "zustand";
 
-interface Fortune {
-  text: string;
-  icon: string;
-}
-
 interface CardState {
   flipped: boolean;
   fortune: string;
