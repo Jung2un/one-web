@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  SectionWrapper,
-  SectionTitle,
   CardSection,
   CardInstruction,
   CardContainer,
@@ -14,8 +12,26 @@ import {
   FortuneText,
   ResetButton,
 } from "./FutureCardSection.styled";
-import { useTransition } from "react";
 import { useTarotStore } from "@/store/useTrotSotre";
+import { useEffect, useState, useTransition } from "react";
+
+function useDebouncedPending(pending: boolean, delay = 1000) {
+  const [debouncedPending, setDebouncedPending] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (pending) {
+      setDebouncedPending(true);
+    } else {
+      timer = setTimeout(() => setDebouncedPending(false), delay);
+    }
+
+    return () => clearTimeout(timer);
+  }, [pending, delay]);
+
+  return debouncedPending;
+}
 
 export default function FutureCardSection() {
   const {
@@ -28,6 +44,7 @@ export default function FutureCardSection() {
     resetCards
   } = useTarotStore();
   const [isPending, startTransition] = useTransition();
+  const debouncedPending = useDebouncedPending(isPending, 1000);
 
   const handleCardClick = (index: number) => {
     // selected, 애니메이션, transition 실행 중이면 무시
@@ -46,13 +63,12 @@ export default function FutureCardSection() {
   const selectedCard = selectedCardIndex !== null ? cards[selectedCardIndex] : null;
 
   return (
-    <SectionWrapper>
-      <SectionTitle>오늘의 운세</SectionTitle>
+    <>
       <CardSection>
         <CardInstruction>
-          {isPending
-            ? "⊂(´･◡･⊂ )∘˚˳°"
-            : "카드를 선택하여 오늘의 운세를 확인하세요"
+          {debouncedPending
+            ? "로딩 중 입니다.."
+            : "카드를 선택하여 오늘의 운세를 확인하세요 ⊂(´･◡･⊂ )∘˚˳°"
           }
         </CardInstruction>
         {!isCardSelected ? (
@@ -87,6 +103,6 @@ export default function FutureCardSection() {
           </SelectedCardContainer>
         )}
       </CardSection>
-    </SectionWrapper>
+    </>
   );
 }

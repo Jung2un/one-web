@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
 import { useDailyPickStore } from "@/store/useDailyPickStore";
 import {
-  SectionWrapper,
-  SectionTitle,
   ContentBox,
   TextWrap,
   Text,
@@ -22,7 +20,12 @@ const contents = [
   `과거는 이미 지나갔고, 미래는 아직 오지 않았어요. 현재는 어떤가요? 지금 이 순간에 늘 행복해야 합니다.`
 ];
 
-export default function DailyPickSection() {
+interface DailyPickSectionProps {
+  sectionRef: React.RefObject<HTMLElement | null>;
+}
+
+export default function DailyPickSection({ sectionRef }: DailyPickSectionProps) {
+
   const {
     contentIndex,
     animationKey,
@@ -36,7 +39,6 @@ export default function DailyPickSection() {
 
   const [displayedText, setDisplayedText] = useState("");
   const [hasTriggered, setHasTriggered] = useState(false); // 한 번만 트리거되도록
-  const sectionRef = useRef<HTMLElement>(null);
 
   const handleContentClick = () => {
     nextContent(contents.length);
@@ -67,7 +69,7 @@ export default function DailyPickSection() {
         observer.unobserve(sectionRef.current);
       }
     };
-  }, [hasTriggered, startTyping]);
+  }, [hasTriggered, startTyping, sectionRef]);
 
   // 타이핑 애니메이션 처리
   useEffect(() => {
@@ -120,8 +122,7 @@ export default function DailyPickSection() {
   }, [animationKey, isTyping, contentIndex, setTypingProgress, finishTyping, hasTriggered]);
 
   return (
-    <SectionWrapper ref={sectionRef}>
-      <SectionTitle>Daily Pick</SectionTitle>
+    <>
       <ContentBox>
         <TextWrap>
           <Text $isTyping={isTyping}>
@@ -140,6 +141,6 @@ export default function DailyPickSection() {
           </NextButton>
         )}
       </ContentBox>
-    </SectionWrapper>
+    </>
   );
 }
