@@ -1,28 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
 
-export const SectionWrapper = styled.section`
-    display: flex;
-    padding: 4rem 2rem;
-    text-align: center;
-    align-items: center;
-    flex-direction: column;
-`;
-
-export const SectionTitle = styled.h2`
-    color: #111;
-    width: 100%;
-    text-align: left;
-    font-weight: 700;
-    margin-bottom: 0;
-    max-width: 1100px;
-    font-size: 2.5rem;
-    letter-spacing: -.1rem;
-
-    @media (max-width: 767px) {
-        font-size: 2rem;
-    }
-`;
-
 export const CardSection = styled.div`
     width: 100%;
     margin-top: 3rem;
@@ -196,7 +173,7 @@ export const SelectedCardContent = styled.div`
 export const FortuneText = styled.p`
     font-weight: 500;
     line-height: 1.6;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin-bottom: 3rem;
     letter-spacing: -0.02em;
 
@@ -212,7 +189,7 @@ export const ResetButton = styled.button`
     cursor: pointer;
     font-weight: 600;
     font-size: 1.1rem;
-    padding: 1rem 2rem;
+    padding: 0.7rem 1.4rem;
     border-radius: 50px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);

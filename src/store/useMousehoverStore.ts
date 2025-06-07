@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type MouseHoverState = {
+interface MouseHoverState {
   coords: { x: number; y: number };
   setCoords: (coords: { x: number; y: number }) => void;
 }

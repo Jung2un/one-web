@@ -5,38 +5,17 @@ const blinkCursor = keyframes`
     51%, 100% { opacity: 0; }
 `;
 
-export const SectionWrapper = styled.section`
-    width: 100%;
-    display: flex;
-    padding: 4rem 0;
-    margin-top: 4rem;
-    min-height: 100vh;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #f5f5f7;
-`;
-
-export const SectionTitle = styled.h2`
-    color: #111;
-    margin-top: 0;
-    font-weight: 700;
-    font-size: 3.7rem;
-    margin-bottom: 2rem;
-    letter-spacing: -0.05rem;
-`;
-
 export const ContentBox = styled.div`
-    position: relative;
+    z-index: 0;
     width: 100%;
-    max-width: 600px;
+    max-width: 40rem;
+    overflow: hidden;
+    position: relative;
     text-align: center;
     padding: 3rem 2rem;
     border-radius: 16px;
     background-color: #fff;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    z-index: 0;
 
     &::before {
         content: "";
@@ -49,7 +28,7 @@ export const ContentBox = styled.div`
         background-size: 200% 200%;
         background-repeat: repeat;
         animation: borderSpin 5s linear infinite;
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
         box-sizing: border-box;
@@ -80,15 +59,15 @@ export const Text = styled.p<{ $isTyping: boolean }>`
     font-weight: 700;
     line-height: 1.6;
     text-align: left;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     white-space: pre-line;
     word-wrap: break-word;
     letter-spacing: -.1rem;
 
     .cursor {
         color: #000;
+        font-size: 2rem;
         font-weight: bold;
-        font-size: 1.8rem;
         animation: ${blinkCursor} 1s infinite;
     }
 `;

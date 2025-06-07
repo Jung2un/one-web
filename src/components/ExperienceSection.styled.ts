@@ -19,7 +19,6 @@ export const SectionTitle = styled.h2`
     width: 100%;
     text-align: left;
     font-weight: 700;
-    margin-bottom: 0;
     max-width: 1100px;
     font-size: 2.5rem;
     letter-spacing: -.1rem;
@@ -35,7 +34,7 @@ export const CardContainer = styled.div`
     overflow: hidden;
     max-width: 1100px;
     position: relative;
-    border-radius: 1rem;
+    margin-bottom: 5rem;
 
     .glow {
         top: 0;
@@ -54,7 +53,7 @@ export const CardContainer = styled.div`
           linear-gradient(to left, black 80%, transparent 100%),
           linear-gradient(to right, black 80%, transparent 100%);
         mask-composite: intersect;
-        -webkit-mask-composite: destination-in; /* safari 대응 */
+        -webkit-mask-composite: destination-in; /* safari */
     }
 
     &:hover .glow {
@@ -62,7 +61,7 @@ export const CardContainer = styled.div`
     }
 `;
 
-export const FeatureGrid = styled.div`
+export const CardGrid = styled.div`
     gap: 3rem;
     width: 100%;
     display: grid;
@@ -72,7 +71,7 @@ export const FeatureGrid = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 `;
 
-export const FeatureCard = styled.div`
+export const Card = styled.div`
     z-index: 1;
     padding: 2rem;
     height: 450px;
@@ -117,14 +116,14 @@ export const FeatureCard = styled.div`
     }
 `;
 
-export const FeatureTitle = styled.h3`
+export const CardTitle = styled.h3`
     margin: 0;
     color: #fff;
     font-weight: 600;
     font-size: 1.1rem;
 `;
 
-export const FeatureDescription = styled.p`
+export const CardDescription = styled.p`
     color: #fff;
     line-height: 1.5;
     font-weight: 700;
@@ -133,7 +132,7 @@ export const FeatureDescription = styled.p`
     white-space: pre-line;
 `;
 
-export const FeatureImage = styled.div`
+export const CardImage = styled.div`
     top: 0;
     left: 0;
     width: 100%;
@@ -143,7 +142,7 @@ export const FeatureImage = styled.div`
     border-radius: 0.9rem;
 `;
 
-export const FeatureContent = styled.div`
+export const CardContent = styled.div`
     z-index: 1;
     text-align: left;
     position: relative;

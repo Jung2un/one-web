@@ -4,16 +4,16 @@ import React from "react";
 import {
   SectionWrapper,
   SectionTitle,
-  FeatureGrid,
-  FeatureCard,
-  FeatureTitle,
-  FeatureDescription,
+  CardGrid,
+  Card,
+  CardTitle,
+  CardDescription,
   CardContainer,
-  FeatureImage,
-  FeatureContent,
+  CardImage,
+  CardContent,
 } from "./ExperienceSection.styled";
-import { useMousehoverStore } from "@/store/useMousehoverStore";
 import Image from "next/image";
+import { useMousehoverStore } from "@/store/useMousehoverStore";
 
 export default function ExperienceSection() {
   const { coords, setCoords } = useMousehoverStore();
@@ -25,7 +25,7 @@ export default function ExperienceSection() {
     setCoords({ x, y });
   };
 
-  const features = [
+  const cards = [
     {
       title: "타로카드",
       description: "오늘의 운세를\n 3D 애니메이션으로.",
@@ -50,31 +50,39 @@ export default function ExperienceSection() {
         <div
           className="glow"
           style={{
-            background: `radial-gradient(circle at ${coords.x}% ${coords.y}%, rgba(155, 108, 212, 0.5), transparent 15%)`,
+            background: `
+              radial-gradient(circle at ${coords.x}% ${coords.y}%,
+                rgba(255, 100, 200, 0.1) 2%,
+                transparent 5%),
+              radial-gradient(circle at ${coords.x}% ${coords.y}%,
+                rgba(255, 255, 100, 0.2) 6%,
+                transparent 12%),
+              radial-gradient(circle at ${coords.x}% ${coords.y}%,
+                rgba(150, 100, 255, 0.2) 8%,
+                transparent 15%)
+            `
           }}
         />
-        <FeatureGrid>
-          {features.map((feature, index) => (
-            <FeatureCard key={index}>
-              <FeatureImage>
+        <CardGrid>
+          {cards.map((info, index) => (
+            <Card key={index}>
+              <CardImage>
                 <Image
-                  src={feature.image}
-                  alt={feature.title}
+                  src={info.image}
+                  alt={info.title}
                   fill
                   style={{ objectFit: "cover" }}
                   sizes="(max-width: 768px) 100vw, 600px"
                 />
-              </FeatureImage>
-              <FeatureContent>
-                <FeatureTitle>{feature.title}</FeatureTitle>
-                <FeatureDescription>{feature.description}</FeatureDescription>
-              </FeatureContent>
-            </FeatureCard>
+              </CardImage>
+              <CardContent>
+                <CardTitle>{info.title}</CardTitle>
+                <CardDescription>{info.description}</CardDescription>
+              </CardContent>
+            </Card>
           ))}
-        </FeatureGrid>
+        </CardGrid>
       </CardContainer>
-
-
     </SectionWrapper>
   );
 }
