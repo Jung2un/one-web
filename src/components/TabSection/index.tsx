@@ -4,8 +4,8 @@ import React, {useRef} from 'react';
 import styled from "styled-components";
 import {useTabStore} from '@/store/useTabStore';
 import DailyPickSection from '@/components/DailyPickSection';
-import FutureCardSection from '@/components/FutureCardSection';
-import UXLabSection from "@/components/UXLabSection";
+import TarotCardSection from '@/components/TarotCardSection';
+import UXLabSection from "@/components/UXLabSection/UXLabSection";
 
 export default function TabSection() {
   const {currentTab, setCurrentTab} = useTabStore();
@@ -21,8 +21,8 @@ export default function TabSection() {
           Daily Pick
         </TabButton>
         <TabButton
-          $isActive={currentTab === "futureCard"}
-          onClick={() => setCurrentTab("futureCard")}
+          $isActive={currentTab === "tarotCard"}
+          onClick={() => setCurrentTab("tarotCard")}
         >
           타로 카드
         </TabButton>
@@ -36,7 +36,7 @@ export default function TabSection() {
 
       <ContentWrapper $currentTab={currentTab} ref={sectionRef}>
         {currentTab === 'dailyPick' && <DailyPickSection sectionRef={sectionRef}/>}
-        {currentTab === 'futureCard' && <FutureCardSection/>}
+        {currentTab === 'tarotCard' && <TarotCardSection/>}
         {currentTab === 'uxLab' && <UXLabSection/>}
       </ContentWrapper>
 

@@ -11,11 +11,11 @@ import {
   CardContainer,
   CardImage,
   CardContent,
-} from "./ExperienceSection.styled";
+} from "./styled";
 import Image from "next/image";
 import { useMousehoverStore } from "@/store/useMousehoverStore";
 
-export default function ExperienceSection() {
+export default function IntroSection() {
   const { coords, setCoords } = useMousehoverStore();
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
