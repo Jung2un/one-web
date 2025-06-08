@@ -9,7 +9,7 @@ import {
   Title,
   Subtitle,
   ScrollIcon
-} from "@/components/MainSection.styled";
+} from "@/components/MainSection/styled";
 
 export default function MainSectionClient({ mainTitle }: { mainTitle: string }) {
   useEffect(() => {

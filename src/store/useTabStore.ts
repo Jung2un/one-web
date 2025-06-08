@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 interface TabState {
-  currentTab: 'dailyPick' | 'futureCard' | 'uxLab';
-  setCurrentTab: (tab: 'dailyPick' | 'futureCard' | 'uxLab') => void;
+  currentTab: 'dailyPick' | 'tarotCard' | 'uxLab';
+  setCurrentTab: (tab: 'dailyPick' | 'tarotCard' | 'uxLab') => void;
 }
 
 export const useTabStore = create<TabState>((set) => ({
