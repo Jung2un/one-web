@@ -10,7 +10,7 @@ import {
   ProgressBarContainer,
   ProgressBar,
   NextButton,
-} from "./DailyPickSection.styled";
+} from "./styled";
 
 const contents = [
   `행복은 매달 찾아온다. 그러나 그것을 맞이할 준비가 되어있지 않으면 거의 다 놓치고 만다. 이번 달에는 이 행운을 놓치지 마라.`,

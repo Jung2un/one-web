@@ -11,7 +11,7 @@ import {
   SelectedCardContent,
   FortuneText,
   ResetButton,
-} from "./FutureCardSection.styled";
+} from "./styled";
 import { useTarotStore } from "@/store/useTrotSotre";
 import { useEffect, useState, useTransition } from "react";
 
@@ -33,7 +33,7 @@ function useDebouncedPending(pending: boolean, delay = 1000) {
   return debouncedPending;
 }
 
-export default function FutureCardSection() {
+export default function TarotCardSection() {
   const {
     cards,
     selectedCardIndex,

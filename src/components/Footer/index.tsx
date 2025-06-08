@@ -10,7 +10,7 @@ import {
   IconWrapper,
   IconButton,
   ScrollToTopButton,
-} from "./Footer.styled";
+} from "./styled";
 import Link from "next/link";
 
 export default function Footer() {

@@ -1,4 +1,4 @@
-import MainSectionClient from "./MainSectionClient";
+import MainSectionClient from "./index.client";
 import { cookies } from "next/headers";
 import { titles } from "@/constants/titles";
 
