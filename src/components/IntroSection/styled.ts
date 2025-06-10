@@ -35,30 +35,6 @@ export const CardContainer = styled.div`
     max-width: 1100px;
     position: relative;
     margin-bottom: 5rem;
-
-    .glow {
-        top: 0;
-        left: 0;
-        z-index: 0;
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        pointer-events: none;
-        border-radius: inherit;
-        transition: opacity 0.3s ease;
-        mask-image:
-          linear-gradient(to top, black 80%, transparent 100%),
-          linear-gradient(to bottom, black 80%, transparent 100%),
-          linear-gradient(to left, black 80%, transparent 100%),
-          linear-gradient(to right, black 80%, transparent 100%);
-        mask-composite: intersect;
-        -webkit-mask-composite: destination-in; /* safari */
-    }
-
-    &:hover .glow {
-        opacity: 1;
-    }
 `;
 
 export const CardGrid = styled.div`

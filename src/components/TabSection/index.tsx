@@ -1,90 +1,61 @@
 "use client";
 
-import React, {useRef} from 'react';
-import styled from "styled-components";
-import {useTabStore} from '@/store/useTabStore';
-import DailyPickSection from '@/components/DailyPickSection';
-import TarotCardSection from '@/components/TarotCardSection';
+import React, { useRef } from "react";
+import { useTabStore } from "@/store/useTabStore";
+import DailyPickSection from "@/components/DailyPickSection";
+import TarotCardSection from "@/components/TarotCardSection";
 import UXLabSection from "@/components/UXLabSection/UXLabSection";
+import {
+  ContentWrapper,
+  Indicator,
+  SectionWrapper,
+  TabButton,
+  TabButtonWrapper,
+  TabText
+} from "@/components/TabSection/styled";
 
 export default function TabSection() {
-  const {currentTab, setCurrentTab} = useTabStore();
+  const { currentTab, setCurrentTab } = useTabStore();
   const sectionRef = useRef<HTMLElement>(null);
+
+  const tabs = [
+    { id: "dailyPick", label: "Daily Pick" },
+    { id: "tarotCard", label: "타로 카드" },
+    { id: "uxLab", label: "UX 실험실" },
+  ] as const;
 
   return (
     <SectionWrapper>
       <TabButtonWrapper>
-        <TabButton
-          $isActive={currentTab === "dailyPick"}
-          onClick={() => setCurrentTab("dailyPick")}
-        >
-          Daily Pick
-        </TabButton>
-        <TabButton
-          $isActive={currentTab === "tarotCard"}
-          onClick={() => setCurrentTab("tarotCard")}
-        >
-          타로 카드
-        </TabButton>
-        <TabButton
-          $isActive={currentTab === "uxLab"}
-          onClick={() => setCurrentTab("uxLab")}
-        >
-          UX 실험실
-        </TabButton>
+        {tabs.map((tab) => (
+          <TabButton
+            key={tab.id}
+            $isActive={currentTab === tab.id}
+            onClick={() => setCurrentTab(tab.id)}
+          >
+            {currentTab === tab.id && (
+              <Indicator
+                layoutId="tab-indicator"
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 30,
+                  duration: 0.3
+                }}
+              />
+            )}
+            <TabText $isActive={currentTab === tab.id}>
+              {tab.label}
+            </TabText>
+          </TabButton>
+        ))}
       </TabButtonWrapper>
 
       <ContentWrapper $currentTab={currentTab} ref={sectionRef}>
-        {currentTab === 'dailyPick' && <DailyPickSection sectionRef={sectionRef}/>}
-        {currentTab === 'tarotCard' && <TarotCardSection/>}
-        {currentTab === 'uxLab' && <UXLabSection/>}
+        {currentTab === "dailyPick" && <DailyPickSection sectionRef={sectionRef} />}
+        {currentTab === "tarotCard" && <TarotCardSection />}
+        {currentTab === "uxLab" && <UXLabSection />}
       </ContentWrapper>
-
     </SectionWrapper>
   );
-};
-
-const SectionWrapper = styled.section`
-    width: 100%;
-    display: flex;
-    padding: 2rem 0;
-    position: relative;
-    align-items: center;
-    flex-direction: column;
-    background-color: #f5f5f7;
-`;
-
-const TabButtonWrapper = styled.div`
-    top: 8rem;
-    gap: 0.25rem;
-    display: flex;
-    padding: 0.25rem;
-    position: absolute;
-    border-radius: 3rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
-`;
-
-const TabButton = styled.button<{ $isActive: boolean; $activeColor?: string }>`
-    border: none;
-    font-weight: 700;
-    font-size: 1.2rem;
-    border-radius: 3rem;
-    padding: 0.5rem 1.25rem;
-    letter-spacing: -0.04rem;
-    color: ${({ $isActive }) => ($isActive ? "#fff" : "#888")};
-    cursor: ${({ $isActive }) => ($isActive ? "inherit" : "pointer")};
-    background-color: ${({ $isActive, $activeColor }) =>
-            $isActive ? ($activeColor ? $activeColor : "#555") : "transparent"};
-`;
-
-const ContentWrapper = styled.section<{ $currentTab: string }>`
-    flex: 1;
-    width: 100%;
-    display: flex;
-    min-height: 100vh;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    // padding: ${({$currentTab}) => ($currentTab === 'dailyPick' ? '4rem 0' : '4rem 2rem')};
-`;
+}

@@ -13,17 +13,8 @@ import {
   CardContent,
 } from "./styled";
 import Image from "next/image";
-import { useMousehoverStore } from "@/store/useMousehoverStore";
 
 export default function IntroSection() {
-  const { coords, setCoords } = useMousehoverStore();
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setCoords({ x, y });
-  };
 
   const cards = [
     {
@@ -46,23 +37,7 @@ export default function IntroSection() {
   return (
     <SectionWrapper>
       <SectionTitle>다채로운 경험</SectionTitle>
-      <CardContainer onMouseMove={handleMouseMove}>
-        <div
-          className="glow"
-          style={{
-            background: `
-              radial-gradient(circle at ${coords.x}% ${coords.y}%,
-                rgba(255, 100, 200, 0.1) 2%,
-                transparent 5%),
-              radial-gradient(circle at ${coords.x}% ${coords.y}%,
-                rgba(255, 255, 100, 0.2) 6%,
-                transparent 12%),
-              radial-gradient(circle at ${coords.x}% ${coords.y}%,
-                rgba(150, 100, 255, 0.2) 8%,
-                transparent 15%)
-            `
-          }}
-        />
+      <CardContainer>
         <CardGrid>
           {cards.map((info, index) => (
             <Card key={index}>
