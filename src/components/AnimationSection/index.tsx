@@ -26,6 +26,16 @@ export default function AnimationSection() {
                   <Brand key={`top-clone-${index}`}>{text}</Brand>
                 ))}
               </Group>
+              <Group aria-hidden>
+                {duplicatedTopArr.map((text, index) => (
+                  <Brand key={`top-clone2-${index}`}>{text}</Brand>
+                ))}
+              </Group>
+              <Group aria-hidden>
+                {duplicatedTopArr.map((text, index) => (
+                  <Brand key={`top-clone3-${index}`}>{text}</Brand>
+                ))}
+              </Group>
             </Track>
           </Viewport>
         </MarqueeContainer>
@@ -41,6 +51,16 @@ export default function AnimationSection() {
               <Group aria-hidden>
                 {duplicatedBottomArr.map((text, index) => (
                   <Brand key={`bottom-clone-${index}`}>{text}</Brand>
+                ))}
+              </Group>
+              <Group aria-hidden>
+                {duplicatedBottomArr.map((text, index) => (
+                  <Brand key={`bottom-clone2-${index}`}>{text}</Brand>
+                ))}
+              </Group>
+              <Group aria-hidden>
+                {duplicatedBottomArr.map((text, index) => (
+                  <Brand key={`bottom-clone3-${index}`}>{text}</Brand>
                 ))}
               </Group>
             </TrackReverse>

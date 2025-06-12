@@ -34,7 +34,7 @@ export const Viewport = styled.div`
 export const Track = styled.div`
   display: flex;
   width: max-content;
-  animation: marquee 20s linear infinite;
+  animation: marquee 40s linear infinite;
   
   @keyframes marquee {
     0% {
@@ -47,7 +47,7 @@ export const Track = styled.div`
 `;
 
 export const TrackReverse = styled(Track)`
-  animation: marqueeReverse 20s linear infinite;
+  animation: marqueeReverse 40s linear infinite;
   
   @keyframes marqueeReverse {
     0% {
