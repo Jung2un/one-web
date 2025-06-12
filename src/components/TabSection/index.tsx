@@ -2,9 +2,9 @@
 
 import React, { useRef } from "react";
 import { useTabStore } from "@/store/useTabStore";
+import UXLabSection from "@/components/UXLabSection";
 import DailyPickSection from "@/components/DailyPickSection";
 import TarotCardSection from "@/components/TarotCardSection";
-import UXLabSection from "@/components/UXLabSection/UXLabSection";
 import {
   ContentWrapper,
   Indicator,

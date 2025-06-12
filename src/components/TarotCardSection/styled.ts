@@ -18,7 +18,7 @@ export const CardSection = styled.div`
     background-size:
             205px 110px,
             250px 155px,
-            121px 150px,
+            355px 150px,
             200px 210px,
             100% 100%;
     background-repeat: repeat;
