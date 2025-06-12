@@ -33,7 +33,12 @@ import {
   MemoActions,
   ActionButton,
   WeatherContainer,
+  WeatherContent,
+  WeatherCard,
   NewsContainer,
+  NewsGrid,
+  NewsCard,
+  ComingSoonMessage,
 } from "./styled";
 
 export default function UXLabSection() {
@@ -181,6 +186,8 @@ export default function UXLabSection() {
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
+          className="bounce-animation"
+          $isAnyFeatureActive={isAnyFeatureActive}
         >
           ✨
         </UXButton>
@@ -273,14 +280,47 @@ export default function UXLabSection() {
       {isWeatherVisible && (
         <WeatherContainer>
           <h3>날씨 정보</h3>
-          <p>구현 중 입니다 🚧</p>
+          <WeatherContent>
+            <WeatherCard>
+              <div className="icon">🌤️</div>
+              <div className="temperature">23°C</div>
+              <div className="description">맑음</div>
+            </WeatherCard>
+            <WeatherCard>
+              <div className="icon">💨</div>
+              <div className="temperature">2m/s</div>
+              <div className="description">남동풍</div>
+            </WeatherCard>
+            <WeatherCard>
+              <div className="icon">💧</div>
+              <div className="temperature">60%</div>
+              <div className="description">습도</div>
+            </WeatherCard>
+          <ComingSoonMessage>
+            API 연동 예정입니다
+          </ComingSoonMessage>
+          </WeatherContent>
         </WeatherContainer>
       )}
 
       {isNewsVisible && (
         <NewsContainer>
           <h3>최신 뉴스</h3>
-          <p>구현 중 입니다 🚧</p>
+          <NewsGrid>
+            <NewsCard href="#" target="_blank" rel="noopener noreferrer">
+              <h4>실시간 IT 뉴스 헤드라인</h4>
+              <div className="meta">IT 뉴스 • 1시간 전</div>
+              <p>최신 기술 트렌드와 IT 업계 소식을 한눈에 확인하세요.</p>
+            </NewsCard>
+            <NewsCard href="#" target="_blank" rel="noopener noreferrer">
+              <h4>개발자 커뮤니티 소식</h4>
+              <div className="meta">개발 뉴스 • 2시간 전</div>
+              <p>개발자들의 실시간 이슈와 토론 내용을 확인해보세요.</p>
+            </NewsCard>
+            <ComingSoonMessage>
+              API 연동 예정입니다
+            </ComingSoonMessage>
+          </NewsGrid>
         </NewsContainer>
       )}
 

@@ -1,4 +1,16 @@
-import { styled } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+
+const bounce = keyframes`
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-12px);
+  }
+  60% {
+    transform: translateY(-7px);
+  }
+`;
 
 export const Container = styled.div`
   width: 100%;
@@ -22,7 +34,7 @@ export const ButtonWrapper = styled.div<{ $isAnyFeatureActive: boolean }>`
   position: relative;
 `;
 
-export const UXButton = styled.button`
+export const UXButton = styled.button<{ $isAnyFeatureActive?: boolean }>`
   width: 80px;
   height: 80px;
   border: none;
@@ -32,6 +44,9 @@ export const UXButton = styled.button`
   border-radius: 50%;
   transition: transform 0.2s;
   background: linear-gradient(135deg, #6e8efb, #a777e3);
+  ${props => !props.$isAnyFeatureActive && css`
+    animation: ${bounce} 2s infinite;
+  `}
 
   &:hover {
     transform: scale(1.05);
@@ -118,15 +133,31 @@ export const UsageDescription = styled.p`
 `;
 
 export const MemoContainer = styled.div`
-  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 16px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   min-height: 500px;
   max-height: 500px;
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 `;
 
 export const MemoForm = styled.form`
@@ -293,10 +324,130 @@ export const ActionButton = styled.button`
   }
 `;
 
-export const WeatherContainer = styled(MemoContainer)`
-  text-align: center;
+export const WeatherContainer = styled.div`
+  padding: 2rem;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  min-height: 500px;
+  max-height: 500px;
+  overflow: hidden;
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
 `;
 
-export const NewsContainer = styled(MemoContainer)`
+export const WeatherContent = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  height: calc(100% - 4rem);
+  place-items: center;
+  padding: 0 1rem;
+`;
+
+export const WeatherCard = styled.div`
+  padding: 4rem;
+  border-radius: 12px;
+  background: #f8f9fa;
   text-align: center;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .temperature {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #495057;
+    margin: 0.5rem 0;
+  }
+
+  .description {
+    color: #868e96;
+    margin-bottom: 0.5rem;
+  }
+
+  .icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+export const NewsContainer = styled.div`
+  padding: 2rem;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 500px;
+  max-height: 500px;
+  overflow: hidden;
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+`;
+
+export const NewsGrid = styled.div`
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  height: calc(100% - 4rem);
+  place-items: center;
+  padding: 0 1rem;
+`;
+
+export const NewsCard = styled.a`
+  display: block;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #f8f9fa;
+  text-decoration: none;
+  transition: transform 0.2s;
+  aspect-ratio: 1.2;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+  }
+
+  .meta {
+    font-size: 0.9rem;
+    color: #868e96;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #495057;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+`;
+
+export const ComingSoonMessage = styled.div`
+  width: 90%;
+  padding: 2rem;
+  text-align: center;
+  color: #868e96;
+  font-size: 0.95rem;
+  margin-top: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  grid-column: 1 / -1;
+  align-self: start;
 `;
