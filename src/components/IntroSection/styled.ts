@@ -67,17 +67,17 @@ export const Card = styled.div`
         position: absolute;
         border-radius: inherit;
         background: 
-            radial-gradient(circle, #dd7bbbff 10%, #dd7bbb00 20%),
-            radial-gradient(circle at 40% 40%, #d79f1eff 5%, #d79f1e00 15%),
-            radial-gradient(circle at 60% 60%, #5a922cff 10%, #5a922c00 20%),
-            radial-gradient(circle at 40% 60%, #4c7894ff 10%, #4c789400 20%),
+            radial-gradient(circle, #dd7bbb80 10%, #dd7bbb00 20%),
+            radial-gradient(circle at 40% 40%, #d79f1e80 5%, #d79f1e00 15%),
+            radial-gradient(circle at 60% 60%, #5a922c80 10%, #5a922c00 20%),
+            radial-gradient(circle at 40% 60%, #4c789480 10%, #4c789400 20%),
             repeating-conic-gradient(
                 from 236.84deg at 50% 50%,
-                #dd7bbb 0%,
-                #d79f1e calc(25% / 5),
-                #5a922c calc(50% / 5),
-                #4c7894 calc(75% / 5),
-                #dd7bbb calc(100% / 5)
+                #dd7bbb80 0%,
+                #d79f1e80 calc(25% / 5),
+                #5a922c80 calc(50% / 5),
+                #4c789480 calc(75% / 5),
+                #dd7bbb80 calc(100% / 5)
             );
         -webkit-mask: 
             linear-gradient(#fff 0 0) content-box, 
