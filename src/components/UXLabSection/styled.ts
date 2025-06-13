@@ -326,57 +326,62 @@ export const ActionButton = styled.button`
 
 export const WeatherContainer = styled.div`
   padding: 2rem;
-  border-radius: 16px;
   background: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
   min-height: 500px;
   max-height: 500px;
   overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .location {
+    color: #666;
+    font-size: 0.9rem;
+    text-align: center;
   }
 `;
 
 export const WeatherContent = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  height: calc(100% - 4rem);
-  place-items: center;
-  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem;
 `;
 
 export const WeatherCard = styled.div`
-  padding: 4rem;
-  border-radius: 12px;
   background: #f8f9fa;
-  text-align: center;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 180px;
   aspect-ratio: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-
-  .temperature {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #495057;
-    margin: 0.5rem 0;
-  }
-
-  .description {
-    color: #868e96;
-    margin-bottom: 0.5rem;
-  }
+  justify-content: center;
+  gap: 0.5rem;
 
   .icon {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
+    opacity: 0.8;
+  }
+
+  .temperature {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.25rem;
   }
 `;
 
@@ -390,27 +395,48 @@ export const NewsContainer = styled.div`
   overflow: hidden;
 
   h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: #333;
+    margin-bottom: 0.5rem;
   }
 `;
 
 export const NewsGrid = styled.div`
+  width: 100%;
+  height: 370px;
+  background: #fff;
+  border-radius: 16px;
   display: grid;
+  height: 420px;
   gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
-  height: calc(100% - 4rem);
+  overflow-y: auto;
   place-items: center;
-  padding: 0 1rem;
+  padding: 1rem 0;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 `;
 
 export const NewsCard = styled.a`
   display: block;
   padding: 2rem;
   border-radius: 12px;
-  background: #f8f9fa;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
   text-decoration: none;
   transition: transform 0.2s;
   aspect-ratio: 1.2;
@@ -439,15 +465,22 @@ export const NewsCard = styled.a`
   }
 `;
 
-export const ComingSoonMessage = styled.div`
-  width: 90%;
-  padding: 2rem;
-  text-align: center;
-  color: #868e96;
-  font-size: 0.95rem;
-  margin-top: 2rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  grid-column: 1 / -1;
-  align-self: start;
+export const WeatherHeader = styled.div`
+  display: flex;
+  padding: 0 1rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  justify-content: space-between;
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+
+  .location {
+    color: #666;
+    font-size: 0.9rem;
+  }
 `;

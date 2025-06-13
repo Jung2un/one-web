@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import Alert from "@/components/Alert";
+import ConfirmModal from "@/components/Modal";
 import { BsTrash } from "react-icons/bs";
+import type { NewsItem } from '@/types/news';
+import type { WeatherInfo } from '@/types/weather';
 import { MdContentCopy } from "react-icons/md";
 import { useUXLabStore } from "@/store/useUXLabStore";
 import { useMemoStore } from "@/store/useMemoStore";
-import ConfirmModal from "@/components/Modal";
-import Alert from "@/components/Alert";
 import {
   Container,
   SubTitle,
@@ -38,8 +40,11 @@ import {
   NewsContainer,
   NewsGrid,
   NewsCard,
-  ComingSoonMessage,
+  WeatherHeader,
 } from "./styled";
+import { fetchNews } from '@/lib/naverApi';
+import { getWeatherStatus } from '@/lib/getWeatherStatus';
+import { getLocation, getAddressFromCoords } from '@/lib/getLocation';
 
 export default function UXLabSection() {
   const {
@@ -70,6 +75,10 @@ export default function UXLabSection() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
   const [memoToDelete, setMemoToDelete] = useState<string | null>(null);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [weather, setWeather] = useState<WeatherInfo | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [location, setLocation] = useState<string>('');
 
   const handleClick = () => {
     if (isLongPressActiveRef.current) return;
@@ -168,6 +177,54 @@ export default function UXLabSection() {
 
   // 활성화된 기능이 있는지 확인
   const isAnyFeatureActive = isMemoVisible || isWeatherVisible || isNewsVisible;
+
+  // 뉴스 데이터 가져오기
+  const loadNews = async () => {
+    setIsLoading(true);
+    try {
+      const newsData = await fetchNews();
+      setNews(newsData);
+    } catch (error) {
+      console.error('뉴스 로딩 에러:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 날씨 데이터 가져오기
+  const loadWeather = async () => {
+    setIsLoading(true);
+    try {
+      // 현재 위치 가져오기
+      const { lat, lon } = await getLocation();
+      
+      // 위치 정보를 주소로 변환
+      const address = await getAddressFromCoords(lat, lon);
+      setLocation(address);
+
+      // 날씨 정보 가져오기
+      const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
+      if (!response.ok) {
+        throw new Error('날씨 정보를 가져오는데 실패했습니다.');
+      }
+      const weatherData = await response.json();
+      setWeather(weatherData);
+    } catch (error) {
+      console.error('날씨 로딩 에러:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 날씨/뉴스 표시 시 데이터 로드
+  useEffect(() => {
+    if (isWeatherVisible) {
+      loadWeather();
+    }
+    if (isNewsVisible) {
+      loadNews();
+    }
+  }, [isWeatherVisible, isNewsVisible]);
 
   return (
     <Container>
@@ -279,26 +336,34 @@ export default function UXLabSection() {
 
       {isWeatherVisible && (
         <WeatherContainer>
-          <h3>날씨 정보</h3>
+          <WeatherHeader>
+            <h3>날씨 정보</h3>
+            {location && <div className="location">현재 위치: {location}</div>}
+          </WeatherHeader>
           <WeatherContent>
-            <WeatherCard>
-              <div className="icon">🌤️</div>
-              <div className="temperature">23°C</div>
-              <div className="description">맑음</div>
-            </WeatherCard>
-            <WeatherCard>
-              <div className="icon">💨</div>
-              <div className="temperature">2m/s</div>
-              <div className="description">남동풍</div>
-            </WeatherCard>
-            <WeatherCard>
-              <div className="icon">💧</div>
-              <div className="temperature">60%</div>
-              <div className="description">습도</div>
-            </WeatherCard>
-          <ComingSoonMessage>
-            API 연동 예정입니다
-          </ComingSoonMessage>
+            {isLoading ? (
+              <div>날씨 정보를 불러오는 중...</div>
+            ) : weather ? (
+              <>
+                <WeatherCard>
+                  <div className="icon">{getWeatherStatus(weather.weather).icon}</div>
+                  <div className="temperature">{weather.temperature}°C</div>
+                  <div className="description">{getWeatherStatus(weather.weather).description}</div>
+                </WeatherCard>
+                <WeatherCard>
+                  <div className="icon">💨</div>
+                  <div className="temperature">{weather.windSpeed}m/s</div>
+                  <div className="description">풍속</div>
+                </WeatherCard>
+                <WeatherCard>
+                  <div className="icon">💧</div>
+                  <div className="temperature">{weather.humidity}%</div>
+                  <div className="description">습도</div>
+                </WeatherCard>
+              </>
+            ) : (
+              <div>날씨 정보를 불러오는데 실패했습니다.</div>
+            )}
           </WeatherContent>
         </WeatherContainer>
       )}
@@ -307,19 +372,26 @@ export default function UXLabSection() {
         <NewsContainer>
           <h3>최신 뉴스</h3>
           <NewsGrid>
-            <NewsCard href="#" target="_blank" rel="noopener noreferrer">
-              <h4>실시간 IT 뉴스 헤드라인</h4>
-              <div className="meta">IT 뉴스 • 1시간 전</div>
-              <p>최신 기술 트렌드와 IT 업계 소식을 한눈에 확인하세요.</p>
-            </NewsCard>
-            <NewsCard href="#" target="_blank" rel="noopener noreferrer">
-              <h4>개발자 커뮤니티 소식</h4>
-              <div className="meta">개발 뉴스 • 2시간 전</div>
-              <p>개발자들의 실시간 이슈와 토론 내용을 확인해보세요.</p>
-            </NewsCard>
-            <ComingSoonMessage>
-              API 연동 예정입니다
-            </ComingSoonMessage>
+            {isLoading ? (
+              <div>뉴스를 불러오는 중...</div>
+            ) : news.length > 0 ? (
+              news.map((item, index) => (
+                <NewsCard 
+                  key={index}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <h4>{item.title}</h4>
+                  <div className="meta">
+                    {new Date(item.pubDate).toLocaleDateString('ko-KR')}
+                  </div>
+                  <p>{item.description}</p>
+                </NewsCard>
+              ))
+            ) : (
+              <div>뉴스를 불러오는데 실패했습니다.</div>
+            )}
           </NewsGrid>
         </NewsContainer>
       )}
