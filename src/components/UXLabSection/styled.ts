@@ -203,7 +203,7 @@ export const MemoList = styled.div`
   flex-direction: column;
   overflow-y: auto;
   max-height: calc(100% - 200px);
-  padding-right: 0.5rem;
+  padding: 0 0.5rem;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -224,11 +224,10 @@ export const MemoList = styled.div`
   }
 `;
 
-export const MemoPlaceholder = styled.div`
+export const Placeholder = styled.div`
   text-align: center;
   color: #888;
   font-size: 0.9rem;
-  transform: translateY(100px);
 `;
 
 export const MemoListHeader = styled.div`
@@ -236,7 +235,7 @@ export const MemoListHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  padding: 0.5rem 0;
+  padding: 0.1rem 0;
   border-bottom: 1px solid #eee;
 `;
 
@@ -272,12 +271,12 @@ export const MemoItem = styled.div`
   position: relative;
   border-radius: 8px;
   background: #fff;
-  box-shadow: 2px 4px 4px -2px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 4px 12px -5px rgba(0,0,0,0.1);
   transition: box-shadow 0.2s ease;
   margin-bottom: 0.5rem;
 
   &:hover {
-    box-shadow: 3px 6px 6px -2px rgba(0, 0, 0, 0.15);
+    box-shadow: 3px 6px 15px -7px rgba(0, 0, 0, 0.15);
   }
 `;
 
@@ -395,26 +394,38 @@ export const NewsContainer = styled.div`
   overflow: hidden;
 
   h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
     color: #333;
+    margin-top: 0;
+    padding: 0 1rem;
+    font-weight: 600;
+    font-size: 1.25rem;
     margin-bottom: 0.5rem;
   }
 `;
 
-export const NewsGrid = styled.div`
+export const NewsGrid = styled.div<{ $isLoaded: boolean }>`
   width: 100%;
-  height: 370px;
-  background: #fff;
-  border-radius: 16px;
-  display: grid;
   height: 420px;
-  gap: 1rem;
-  grid-template-columns: repeat(2, 1fr);
+  background: #fff;
+  margin-top: 1rem;
   overflow-y: auto;
-  place-items: center;
-  padding: 1rem 0;
+  min-height: 420px;
+  border-radius: 16px;
+  padding: 0.2rem 0.5rem 1rem 0.5rem;
 
+  ${(props) =>
+    props.$isLoaded
+      ? css`
+          display: grid;
+          gap: 1rem;
+          grid-template-columns: repeat(2, 1fr);
+          place-items: center;
+        `
+      : css`
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `}
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -433,23 +444,23 @@ export const NewsGrid = styled.div`
 
 export const NewsCard = styled.a`
   display: block;
-  padding: 2rem;
+  padding: 2rem 2rem 0.5rem 2rem;
   border-radius: 12px;
   background: #fff;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  box-shadow: 0 1px 9px rgba(0,0,0,0.1);
   text-decoration: none;
   transition: transform 0.2s;
   aspect-ratio: 1.2;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: scale(1.01);
   }
 
   h4 {
     font-size: 1.1rem;
     font-weight: 600;
     color: #495057;
-    margin-bottom: 0.5rem;
+    margin: 0.5rem 0;
   }
 
   .meta {

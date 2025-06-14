@@ -1,14 +1,20 @@
 import { useRef } from 'react';
 import { useUXLabStore } from '@/store/useUXLabStore';
 
-export const useButtonInteraction = () => {
-  const { resetAll, showMemo, showWeather, showNews } = useUXLabStore();
-  
+export const useUXLabInteraction = () => {
+  const {
+    showMemo,
+    showWeather,
+    showNews,
+    resetAll,
+  } = useUXLabStore();
+
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const longPressRef = useRef<NodeJS.Timeout | null>(null);
   const clickCountRef = useRef(0);
   const isLongPressActiveRef = useRef(false);
 
+  // 클릭 이벤트 핸들러
   const handleClick = () => {
     if (isLongPressActiveRef.current) return;
 
@@ -27,6 +33,7 @@ export const useButtonInteraction = () => {
     }, 300);
   };
 
+  // 더블클릭 이벤트 핸들러
   const handleDoubleClick = () => {
     if (isLongPressActiveRef.current) return;
 
@@ -38,6 +45,7 @@ export const useButtonInteraction = () => {
     showWeather();
   };
 
+  // 마우스 다운 이벤트 핸들러
   const handleMouseDown = () => {
     isLongPressActiveRef.current = false;
 
@@ -48,6 +56,7 @@ export const useButtonInteraction = () => {
     }, 500);
   };
 
+  // 마우스 업 이벤트 핸들러
   const handleMouseUp = () => {
     if (longPressRef.current) {
       clearTimeout(longPressRef.current);
@@ -61,6 +70,6 @@ export const useButtonInteraction = () => {
     handleClick,
     handleDoubleClick,
     handleMouseDown,
-    handleMouseUp
+    handleMouseUp,
   };
 }; 
