@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React from "react";
 import Alert from "@/components/Alert";
 import ConfirmModal from "@/components/Modal";
 import { BsTrash } from "react-icons/bs";
-import type { NewsItem } from '@/types/news';
-import type { WeatherInfo } from '@/types/weather';
 import { MdContentCopy } from "react-icons/md";
 import { useUXLabStore } from "@/store/useUXLabStore";
 import { useMemoStore } from "@/store/useMemoStore";
+import { useUXLabInteraction } from "@/hooks/useUXLabInteraction";
+import { useMemoHandlers } from "@/hooks/useMemoHandlers";
+import { useWeatherAndNews } from "@/hooks/useWeatherAndNews";
+import { getWeatherStatus } from '@/lib/getWeatherStatus';
 import {
   Container,
   SubTitle,
@@ -24,7 +26,7 @@ import {
   MemoForm,
   MemoInput,
   MemoSubmitButton,
-  MemoPlaceholder,
+  Placeholder,
   MemoList,
   MemoListHeader,
   MemoCount,
@@ -42,189 +44,33 @@ import {
   NewsCard,
   WeatherHeader,
 } from "./styled";
-import { fetchNews } from '@/lib/naverApi';
-import { getWeatherStatus } from '@/lib/getWeatherStatus';
-import { getLocation, getAddressFromCoords } from '@/lib/getLocation';
 
 export default function UXLabSection() {
-  const {
-    isMemoVisible,
-    isWeatherVisible,
-    isNewsVisible,
-    showMemo,
-    showWeather,
-    showNews,
-    resetAll,
-  } = useUXLabStore();
+  const { memos } = useMemoStore();
+  const { isMemoVisible, isWeatherVisible, isNewsVisible, resetAll } = useUXLabStore();
+  const { handleClick, handleDoubleClick, handleMouseDown, handleMouseUp } = useUXLabInteraction();
+  const { news, weather, isLoading, location } = useWeatherAndNews(isWeatherVisible, isNewsVisible);
 
   const {
-    memos,
     currentMemo,
     setCurrentMemo,
-    addMemo,
-    deleteMemo,
-    deleteAllMemos,
-  } = useMemoStore();
+    showAlert,
+    setShowAlert,
+    showDeleteModal,
+    setShowDeleteModal,
+    showDeleteAllModal,
+    setShowDeleteAllModal,
+    handleSubmit,
+    handleCopyMemo,
+    handleDeleteClick,
+    handleDeleteConfirm,
+    handleDeleteAllClick,
+    handleDeleteAllConfirm,
+    formatDate,
+  } = useMemoHandlers();
 
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const longPressRef = useRef<NodeJS.Timeout | null>(null);
-  const clickCountRef = useRef(0);
-  const isLongPressActiveRef = useRef(false);
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
-  const [memoToDelete, setMemoToDelete] = useState<string | null>(null);
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [weather, setWeather] = useState<WeatherInfo | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [location, setLocation] = useState<string>('');
-
-  const handleClick = () => {
-    if (isLongPressActiveRef.current) return;
-
-    clickCountRef.current += 1;
-
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-
-    timerRef.current = setTimeout(() => {
-      if (clickCountRef.current === 1) {
-        resetAll();
-        showMemo();
-      }
-      clickCountRef.current = 0;
-    }, 300);
-  };
-
-  const handleDoubleClick = () => {
-    if (isLongPressActiveRef.current) return;
-
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    clickCountRef.current = 0;
-    resetAll();
-    showWeather();
-  };
-
-  const handleMouseDown = () => {
-    isLongPressActiveRef.current = false;
-
-    longPressRef.current = setTimeout(() => {
-      isLongPressActiveRef.current = true;
-      resetAll();
-      showNews();
-    }, 500);
-  };
-
-  const handleMouseUp = () => {
-    if (longPressRef.current) {
-      clearTimeout(longPressRef.current);
-    }
-    setTimeout(() => {
-      isLongPressActiveRef.current = false;
-    }, 100);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addMemo();
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const handleCopyMemo = async (content: string) => {
-    try {
-      await navigator.clipboard.writeText(content);
-      setShowAlert(true);
-    } catch (err) {
-      console.error('메모 복사 실패:', err);
-    }
-  };
-
-  const handleDeleteClick = (id: string) => {
-    setMemoToDelete(id);
-    setShowDeleteModal(true);
-  };
-
-  const handleDeleteConfirm = () => {
-    if (memoToDelete) {
-      deleteMemo(memoToDelete);
-      setMemoToDelete(null);
-    }
-    setShowDeleteModal(false);
-  };
-
-  const handleDeleteAllClick = () => {
-    setShowDeleteAllModal(true);
-  };
-
-  const handleDeleteAllConfirm = () => {
-    deleteAllMemos();
-    setShowDeleteAllModal(false);
-  };
-
-  // 활성화된 기능이 있는지 확인
+  // 활성화된 기능이 있는지 확인 (클릭, 더블클릭, 길게 누르기)
   const isAnyFeatureActive = isMemoVisible || isWeatherVisible || isNewsVisible;
-
-  // 뉴스 데이터 가져오기
-  const loadNews = async () => {
-    setIsLoading(true);
-    try {
-      const newsData = await fetchNews();
-      setNews(newsData);
-    } catch (error) {
-      console.error('뉴스 로딩 에러:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 날씨 데이터 가져오기
-  const loadWeather = async () => {
-    setIsLoading(true);
-    try {
-      // 현재 위치 가져오기
-      const { lat, lon } = await getLocation();
-      
-      // 위치 정보를 주소로 변환
-      const address = await getAddressFromCoords(lat, lon);
-      setLocation(address);
-
-      // 날씨 정보 가져오기
-      const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
-      if (!response.ok) {
-        throw new Error('날씨 정보를 가져오는데 실패했습니다.');
-      }
-      const weatherData = await response.json();
-      setWeather(weatherData);
-    } catch (error) {
-      console.error('날씨 로딩 에러:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 날씨/뉴스 표시 시 데이터 로드
-  useEffect(() => {
-    if (isWeatherVisible) {
-      loadWeather();
-    }
-    if (isNewsVisible) {
-      loadNews();
-    }
-  }, [isWeatherVisible, isNewsVisible]);
 
   return (
     <Container>
@@ -289,9 +135,9 @@ export default function UXLabSection() {
           </MemoForm>
           
           {memos.length === 0 ? (
-            <MemoPlaceholder>
+            <Placeholder style={{transform: 'translateY(100px)'}}>
               메모 목록이 비어있습니다
-            </MemoPlaceholder>
+            </Placeholder>
           ) : (
             <>
               <MemoListHeader>
@@ -342,7 +188,7 @@ export default function UXLabSection() {
           </WeatherHeader>
           <WeatherContent>
             {isLoading ? (
-              <div>날씨 정보를 불러오는 중...</div>
+              <Placeholder>날씨 정보를 불러오는 중...</Placeholder>
             ) : weather ? (
               <>
                 <WeatherCard>
@@ -362,7 +208,7 @@ export default function UXLabSection() {
                 </WeatherCard>
               </>
             ) : (
-              <div>날씨 정보를 불러오는데 실패했습니다.</div>
+              <Placeholder>날씨 정보를 불러오는데 실패했습니다.</Placeholder>
             )}
           </WeatherContent>
         </WeatherContainer>
@@ -371,9 +217,9 @@ export default function UXLabSection() {
       {isNewsVisible && (
         <NewsContainer>
           <h3>최신 뉴스</h3>
-          <NewsGrid>
+          <NewsGrid $isLoaded={!isLoading && news.length > 0}>
             {isLoading ? (
-              <div>뉴스를 불러오는 중...</div>
+              <Placeholder>뉴스를 불러오는 중...</Placeholder>
             ) : news.length > 0 ? (
               news.map((item, index) => (
                 <NewsCard 
@@ -390,7 +236,7 @@ export default function UXLabSection() {
                 </NewsCard>
               ))
             ) : (
-              <div>뉴스를 불러오는데 실패했습니다.</div>
+              <Placeholder>뉴스를 불러오는데 실패했습니다.</Placeholder>
             )}
           </NewsGrid>
         </NewsContainer>

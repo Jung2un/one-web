@@ -1,18 +1,23 @@
-import { useState } from 'react';
 import { useMemoStore } from '@/store/useMemoStore';
 
-export const useMemoActions = () => {
-  const { memos, currentMemo, setCurrentMemo, addMemo, deleteMemo, deleteAllMemos } = useMemoStore();
-  const [showAlert, setShowAlert] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
-  const [memoToDelete, setMemoToDelete] = useState<string | null>(null);
+export const useMemoHandlers = () => {
+  const {
+    currentMemo,
+    setCurrentMemo,
+    addMemo,
+    deleteMemo,
+    deleteAllMemos,
+    showAlert,
+    setShowAlert,
+    showDeleteModal,
+    setShowDeleteModal,
+    showDeleteAllModal,
+    setShowDeleteAllModal,
+    memoToDelete,
+    setMemoToDelete,
+  } = useMemoStore();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addMemo();
-  };
-
+  // 메모 날짜 포맷팅 함수
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ko-KR', {
@@ -24,6 +29,13 @@ export const useMemoActions = () => {
     });
   };
 
+  // 메모 제출 핸들러
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    addMemo();
+  };
+
+  // 메모 복사 핸들러
   const handleCopyMemo = async (content: string) => {
     try {
       await navigator.clipboard.writeText(content);
@@ -33,11 +45,13 @@ export const useMemoActions = () => {
     }
   };
 
+  // 메모 삭제 클릭 핸들러
   const handleDeleteClick = (id: string) => {
     setMemoToDelete(id);
     setShowDeleteModal(true);
   };
 
+  // 메모 삭제 확인 핸들러
   const handleDeleteConfirm = () => {
     if (memoToDelete) {
       deleteMemo(memoToDelete);
@@ -46,31 +60,32 @@ export const useMemoActions = () => {
     setShowDeleteModal(false);
   };
 
+  // 전체 삭제 클릭 핸들러
   const handleDeleteAllClick = () => {
     setShowDeleteAllModal(true);
   };
 
+  // 전체 삭제 확인 핸들러
   const handleDeleteAllConfirm = () => {
     deleteAllMemos();
     setShowDeleteAllModal(false);
   };
 
   return {
-    memos,
     currentMemo,
     setCurrentMemo,
     showAlert,
     setShowAlert,
     showDeleteModal,
+    setShowDeleteModal,
     showDeleteAllModal,
+    setShowDeleteAllModal,
     handleSubmit,
-    formatDate,
     handleCopyMemo,
     handleDeleteClick,
     handleDeleteConfirm,
     handleDeleteAllClick,
     handleDeleteAllConfirm,
-    setShowDeleteModal,
-    setShowDeleteAllModal
+    formatDate,
   };
 }; 
